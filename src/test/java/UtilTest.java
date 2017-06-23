@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.Test;
 
 import main.Person;
@@ -7,12 +8,13 @@ import java.util.Arrays;
 import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+//import static org.hamcrest.Matchers.containsInAnyOrder;
+//import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.junit.Assert.assertThat;
 
 public class UtilTest {
@@ -21,21 +23,24 @@ public class UtilTest {
     public void shouldMapStringsToUpperCase() {
         List<String> input = asList("This", "is", "java", "8");
         List<String> result = Util.mapToUppercase(input);
-        assertThat(result, contains("THIS", "IS", "JAVA", "8"));
+        Assert.assertEquals(result, Arrays.asList("THIS", "IS", "JAVA", "8"));
+       // assertThat(result, contains("THIS", "IS", "JAVA", "8"));
     }
 
     @Test
     public void shouldRemoveElementsWithMoreThanThreeCharacters() {
         List<String> input = asList("This", "is", "java", "8");
         List<String> result = Util.removeElementsWithMoreThanFourCharacters(input);
-        assertThat(result, contains("is", "8"));
+        Assert.assertEquals(result, Arrays.asList("is", "8"));
+       // assertThat(result, contains("is", "8"));
     }
 
     @Test
     public void shouldSortStrings() throws Exception {
         List<String> input = Arrays.asList("C", "F", "A", "D", "B", "E");
         List<String> result = Util.sortStrings(input);
-        assertThat(result, is(equalTo(Arrays.asList("A", "B", "C", "D", "E", "F"))));
+        Assert.assertEquals(result, Arrays.asList("A", "B", "C", "D", "E", "F"));
+       // assertThat(result, is(equalTo(Arrays.asList("A", "B", "C", "D", "E", "F"))));
     }
 
     @Test
@@ -66,7 +71,8 @@ public class UtilTest {
                 asList("John", "George", "Paal"));
 
         List<String> result = Util.flattenToSingleCollection(input);
-        assertThat(result, contains("Duke", "Fred", "John", "George", "Paal"));
+        Assert.assertEquals(result, Arrays.asList("Duke", "Fred", "John", "George", "Paal"));
+        //assertThat(result, contains("Duke", "Fred", "John", "George", "Paal"));
     }
 
     @Test
@@ -100,7 +106,8 @@ public class UtilTest {
                 new Person("Marius", 17));
 
         List<String> result = Util.filterPeopleLessThan18YearsOld(input);
-        assertThat(result, contains("Duke", "Marius"));
+        Assert.assertEquals(result, Arrays.asList("Duke", "Marius"));
+        //assertThat(result, contains("Duke", "Marius"));
     }
 
     @Test
@@ -126,9 +133,11 @@ public class UtilTest {
         List<Person> input = asList(duke, fred, john);
 
         Map<Boolean, List<Person>> result = Util.partitionAdults(input);
-
-        assertThat(result.get(true), containsInAnyOrder(fred, john));
-        assertThat(result.get(false), containsInAnyOrder(duke));
+        Assert.assertEquals("Fred", result.get(true).get(0).getName());
+        Assert.assertTrue(result.get(true).get(1).getName() == "John");
+        Assert.assertTrue(result.get(false).get(0).getName() == "Duke");
+        //assertThat(result.get(true), containsInAnyOrder(fred, john));
+        //assertThat(result.get(false), containsInAnyOrder(duke));
     }
 
     @Test
@@ -139,8 +148,10 @@ public class UtilTest {
         List<Person> input = asList(duke, fred, john);
 
         Map<String, List<Person>> result = Util.partitionByNationality(input);
-
-        assertThat(result.get("USA"), containsInAnyOrder(duke));
-        assertThat(result.get("Norway"), containsInAnyOrder(fred, john));
+        Assert.assertTrue(result.get("USA").get(0).getName().contains("Duke"));
+        Assert.assertTrue(result.get("Norway").get(0).getName().contains("Fred"));
+        Assert.assertTrue(result.get("Norway").get(1).getName().contains("John"));
+        //assertThat(result.get("USA"), containsInAnyOrder(duke));
+        //assertThat(result.get("Norway"), containsInAnyOrder(fred, john));
     }
 }

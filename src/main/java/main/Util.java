@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.print.attribute.standard.JobOriginatingUserName;
+
 public class Util {
 
 	public static List<String> mapToUppercase(List<String> inputStringLst) {
@@ -30,43 +32,41 @@ public class Util {
 	}
 
 	public static Integer sum(List<Integer> input) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		//return input.stream().reduce(0, Integer::sum);
+		return input.stream().mapToInt(Integer::intValue).sum();
 	}
 
 	public static List<String> flattenToSingleCollection(List<List<String>> input) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return input.stream().flatMap(List::stream).collect(Collectors.toList());
 	}
 
 	public static String separateNamesByComma(List<Person> input) {
-		// TODO Auto-generated method stub
-		return null;
+		return input.stream().map(Person::getName).collect(Collectors.joining(", ", "Names: ", "."));
 	}
 
 	public static String findNameOfOldestPerson(List<Person> input) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return input.stream().max(Comparator.comparingInt(Person::getAge)).map(Person::getName).get();
 	}
 
 	public static List<String> filterPeopleLessThan18YearsOld(List<Person> input) {
-		// TODO Auto-generated method stub
-		return null;
+		return input.stream().filter(person -> person.getAge() < 18).map(Person::getName).collect(Collectors.toList());
 	}
 
 	public static IntSummaryStatistics getSummaryStatisticsForAge(List<Person> input) {
-		// TODO Auto-generated method stub
-		return null;
+		return input.stream().mapToInt(Person::getAge).summaryStatistics();
 	}
 
 	public static Map<Boolean, List<Person>> partitionAdults(List<Person> input) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return input.stream().collect(Collectors.partitioningBy(p -> p.getAge() > 18));
 	}
 
 	public static Map<String, List<Person>> partitionByNationality(List<Person> input) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return input.stream().collect(Collectors.groupingBy(Person::getCountry));
 	}
 
 }
